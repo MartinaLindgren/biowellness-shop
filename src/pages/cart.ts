@@ -1,5 +1,9 @@
 import { getCart, saveCart } from "./cart-store";
 
+function updateCart() {
+  window.dispatchEvent(new CustomEvent("cart:update"));
+}
+
 export function renderCart(container: HTMLElement) {
   const cart = getCart();
   container.innerHTML = "<h1>Varukorg</h1>";
@@ -21,17 +25,38 @@ export function renderCart(container: HTMLElement) {
     } SEK</p>
         <button class="minus">-</button>
         <button class="plus">+</button>
-        <button class="remove">Ta bort</>
+        <button class="remove">Ta bort</button>
         `;
+
     div.querySelector(".minus")!.addEventListener("click", () => {
-      if (item.quantity > 1) item.quantity--;
-      else cart.splice(index, 1);
+      const existing = cart.find((i) => i.product.id === item.product.id);
+      if (!existing) return;
+      if (existing.quantity > 1) existing.quantity--;
+      else {
+        const idx = cart.findIndex((i) => i.product.id === item.product.id);
+        if (idx > -1) cart.splice(idx, 1);
+      }
+
       saveCart(cart);
+      updateCart();
       renderCart(container);
     });
+
     div.querySelector(".plus")!.addEventListener("click", () => {
-      item.quantity++;
+      const existing = cart.find((i) => i.product.id === item.product.id);
+      if (!existing) return;
+
+      existing.quantity++;
       saveCart(cart);
+      updateCart();
+      renderCart(container);
+    });
+
+    div.querySelector(".remove")!.addEventListener("click", () => {
+      const idx = cart.findIndex((i) => i.product.id === item.product.id);
+      if (idx > -1) cart.splice(idx, 1);
+      saveCart(cart);
+      updateCart();
       renderCart(container);
     });
 

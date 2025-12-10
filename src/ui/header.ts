@@ -1,32 +1,24 @@
-import { getCart } from "../pages/cart-store";
+import { getCart, updateCart } from "../pages/cart-store";
 
 export function renderHeader(container: HTMLElement) {
-  container.innerHTML = "";
+  container.innerHTML = `
+  <h1>Biowellness</h1>
+  <nav>
+  <a href="#/">Startsida</a>
+  <a href="#/cart">Varukorg(<span id="cart-count">0</span>)</a>
+  </nav>
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "header-inner";
+  `;
 
-  const brand = document.createElement("a");
-  brand.href = "#/";
-  brand.textContent = "Biowellness";
-  brand.className = "brand";
-  wrapper.appendChild(brand);
-
-  const cartLink = document.createElement("a");
-  cartLink.href = "#/cart";
-  cartLink.id = "cart-link";
-  cartLink.textContent = "Varukorg (0)";
-  wrapper.appendChild(cartLink);
-
-  container.appendChild(wrapper);
+  const countEl = document.getElementById("cart-count")!;
 
   function updateCartCount() {
     const cart = getCart();
-    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartLink.textContent = `Varukorg (${totalQty})`;
+    countEl.textContent = String(
+      cart.reduce((sum, item) => sum + item.quantity, 0)
+    );
   }
 
-  updateCartCount();
-  window.addEventListener("cart:add", updateCartCount);
   window.addEventListener("cart:update", updateCartCount);
+  updateCartCount();
 }
