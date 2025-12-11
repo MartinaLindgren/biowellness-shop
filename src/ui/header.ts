@@ -5,6 +5,8 @@ export function renderHeader(container: HTMLElement) {
   <h1>Biowellness</h1>
   <nav>
   <a href="#/">Startsida</a>
+  <a href="#/products">Produkter</a>
+  <a href="#/inspiration">Inspiration</a>
   <a href="#/cart">Varukorg(<span id="cart-count">0</span>)</a>
   </nav>
 
