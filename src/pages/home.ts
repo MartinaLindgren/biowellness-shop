@@ -4,6 +4,27 @@ import { createProductCard } from "../ui/product-card";
 export function renderHome(container: HTMLElement) {
   container.innerHTML = ""; // rensa
 
+  ///Hero
+  const hero = document.createElement("section");
+  hero.className = "hero";
+
+  hero.innerHTML = `
+  <div class="hero-content">
+  <div class="hero-cards">
+
+  <a href="#products" class="hero-card">
+  <h3>Se alla produkter</h3>
+  </a>
+
+  <a href="#/inspiration" class="hero-card">
+  <h3>Inspiration</h3>
+  </a>
+  </div>
+  </div>
+  `;
+
+  container.appendChild(hero);
+
   const title = document.createElement("h1");
   title.textContent = "Biowellness - Startsida";
   container.appendChild(title);
